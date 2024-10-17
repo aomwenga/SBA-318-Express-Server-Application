@@ -11,6 +11,8 @@ const app = express();
 const PORT = 3000;
 
 // middleware
+app.use(express.json());
+
 app.use(loggerMiddleware);
 
 // routes
