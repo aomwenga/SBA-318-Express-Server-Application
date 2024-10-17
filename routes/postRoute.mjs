@@ -7,7 +7,17 @@ const router = express.Router();
 router.get("/", (req, res) => {
   res.json(posts);
 });
+// get post only by id
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+  const post = posts.find((post) => post.id === parseInt(id));
 
+  if (!post) {
+    return res.status(404).send("Post not found");
+  }
+
+  res.json(post);
+});
 // post route
 router.post("/", (req, res) => {
   const { userId, content } = req.body;
@@ -42,6 +52,19 @@ router.patch("/:id", (req, res) => {
   }
 
   res.json(post);
+});
+
+// delete posts by id
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+
+  const postIndex = posts.findIndex((post) => post.id === parseInt(id));
+  if (postIndex === -1) {
+    return res.status(404).send("Post not found");
+  }
+
+  posts.splice(postIndex, 1);
+  res.status(204).send(); // 204 No Content
 });
 
 export default router;
